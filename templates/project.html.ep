@@ -51,8 +51,9 @@
   my $ssh_port = config->{basic}{ssh_port};
   my $rep_home = app->git->rep_home;
   my $execute_user = getpwuid($>);
-  my $ssh_rep_url = "ssh://$execute_user\@" . $url->host
+  my $ssh_rep_url = "ssh://$execute_user\@" . $config->{basic}{host}
     . ($ssh_port ? ":$ssh_port" : '') . "$rep_home/$user/$project.git";
+  my $http_rep_url = config->{basic}{httpCloneUrl} . "/$user/$project.git";
 
 %>
 
@@ -62,7 +63,7 @@
 
   %= javascript begin
     $(document).ready(function () {
-      var http_rep_url = '<%= url_for("$user/$project.git")->to_abs %>';
+      var http_rep_url = '<%= $http_rep_url %>';
       % my $rep = $git->rep($user, $project);
       % my $ssh_port = config->{basic}{ssh_port} || '';
       
